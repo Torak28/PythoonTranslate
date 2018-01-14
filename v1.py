@@ -1,12 +1,30 @@
 # -*- coding: utf-8 -*-
 
-import json, re
+import json
 from googletrans import Translator
 
+def changeDict(str, mode):
+    data = json.loads(open("Dict.json").read())
+    for _ in range(len(data)):
+        if str in data[_].values():
+            if mode == 'pl':
+                data[_]['pl'] = input("Na co zmieniasz? : ")
+                break
+            elif mode == 'eng':
+                data[_]['eng'] = input("Na co zmieniasz? : ")
+                break
+    json.dump(data, open('Dict.json', 'w+'))
+
+def translateFromDict(str, it):
+    data = json.loads(open("Dict.json").read())
+    out = list(data[it].values())
+    out.remove(str)
+    return out[0]
 
 def translateWordPL(str):
-    if checkIfInDict(str):
-        return 'xd'
+    state, num = checkIfInDict(str)
+    if state:
+        return translateFromDict(str, num)
     else:
         translator = Translator()
         out = translator.translate(str, dest='pl')
@@ -14,8 +32,9 @@ def translateWordPL(str):
 
 
 def translateWordEN(str):
-    if checkIfInDict(str):
-        return 'xd'
+    state, num = checkIfInDict(str)
+    if state:
+        return translateFromDict(str, num)
     else:
         translator = Translator()
         out = translator.translate(str, dest='en')
@@ -24,24 +43,17 @@ def translateWordEN(str):
 
 def checkIfInDict(str):
     data = json.loads(open("Dict.json").read())
-    r = re.compile("\'(.*?)\'")
-    tab = r.findall(str(data[0].values()))
-    if str in tab:
-        return True
-    return False
+    for _ in range(len(data)):
+        if str in data[_].values():
+            return True, _
+    return False, 0
 
+if __name__ == '__main__':
+    num = input("Język docelowy(1 - pl, 2 - eng): ")
+    str = input("Słowo do przetłumaczenia: ")
+    if int(num) == 1:
+        print(translateWordPL(str))
+    elif int(num) == 2:
+        print(translateWordEN(str))
 
-print(translateWordPL('horse'))
-print(translateWordEN('koń'))
-
-slownik = [
-    {
-        "eng": "horse",
-        "pl": "koń"
-    }, {
-        "eng": "tree",
-        "pl": "drzewo"
-    }
-]
-
-json.dump(slownik, open('Dict.json', 'w+'))
+    changeDict(str, 'pl')
