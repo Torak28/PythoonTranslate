@@ -3,15 +3,15 @@
 import json
 from googletrans import Translator
 
-def changeDict(str, mode):
+def changeDict(str, mode, nStr):
     data = json.loads(open("Dict.json").read())
     for _ in range(len(data)):
         if str in data[_].values():
             if mode == 'pl':
-                data[_]['pl'] = input("Na co zmieniasz? : ")
+                data[_]['pl'] = nStr
                 break
             elif mode == 'eng':
-                data[_]['eng'] = input("Na co zmieniasz? : ")
+                data[_]['eng'] = nStr
                 break
     json.dump(data, open('Dict.json', 'w+'))
 
@@ -49,11 +49,21 @@ def checkIfInDict(str):
     return False, 0
 
 if __name__ == '__main__':
-    num = input("Język docelowy(1 - pl, 2 - eng): ")
-    str = input("Słowo do przetłumaczenia: ")
-    if int(num) == 1:
-        print(translateWordPL(str))
-    elif int(num) == 2:
-        print(translateWordEN(str))
-
-    changeDict(str, 'pl')
+    mode = input('1 - tłumaczenie, 2 - dodawanie')
+    if int(mode) == 1:
+        num = input("Język docelowy(1 - pl, 2 - eng): ")
+        str = input("Słowo do przetłumaczenia: ")
+        if int(num) == 1:
+            print(translateWordPL(str))
+            ch = input("Chcesz zmienić znaczenie? 1 - tak, 2 - nie :")
+            if int(ch) == 1:
+                nStr = input("Nowe znaczenie: ")
+                changeDict(str, 'pl', nStr)
+        elif int(num) == 2:
+            print(translateWordEN(str))
+            ch = input("Chcesz zmienić znaczenie? 1 - tak, 2 - nie :")
+            if int(ch) == 1:
+                nStr = input("Nowe znaczenie: ")
+                changeDict(str, 'eng', nStr)
+    elif int(mode) == 2:
+        print("TODO")
