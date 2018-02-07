@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-
 import json
 from googletrans import Translator
 from tkinter import *
-from PIL import Image, ImageTk
 
 fields = 'Słowo PL', 'Słowo ENG'
 
@@ -125,8 +123,8 @@ def Dict(e):
         e[0][1].insert(0, 'Oba pola muszą zawierać pojedyncze slowa!')
 
 def Info():
-    #
     window = Toplevel(root)
+    window.title('Info')
     photo = PhotoImage(file='pic.gif')
     w1 = Label(window, image=photo)
     w1.image = photo
@@ -136,6 +134,7 @@ def Info():
 
 if __name__ == '__main__':
     root = Tk()
+    root.title('Tłumacz')
     ents = makeform(root, fields)
     to_eng = Button(root, text='Na Angielski', command=(lambda e=ents: To_Eng(e)))
     to_eng.pack(side=LEFT, padx=5, pady=5)
