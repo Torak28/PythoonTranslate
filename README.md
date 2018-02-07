@@ -41,4 +41,4 @@ def checkIfInDict(str):
 
 ### Sposób działania:
 
-![alt text](https://i.imgur.com/O7nAr11.gifv "")
+![alt text](https://i.imgur.com/O7nAr11.gif)
