@@ -43,6 +43,12 @@ def checkIfInDict(str):
             return True, _
     return False, 0
 
+def add_2_dict(pl, eng):
+    data = json.load(open("Dict.json"))
+    upt = {"eng" : eng, "pl" : pl}
+    data.append(upt)
+    json.dump(data, open('Dict.json', 'w+'))
+
 def isWord(str):
     if ' ' in str or str == '':
         return False
@@ -76,29 +82,47 @@ def translate_2_EN(str):
 def translateButton_2_PL(str):
     out = translate_2_PL(str)
     if out is False:
-        print('xd')
+        return 'Pole EN musi zawierać pojedyncze slowo!'
     else:
-        print(out)
+        return out
 
 
 def translateButton_2_EN(str):
     out = translate_2_EN(str)
     if out is False:
-        return 'Tylko pojedyncze słowa!'
+        return 'Pole PL musi zawierać pojedyncze slowo!'
     else:
         return out
 
 def To_Eng(e):
     e[1][1].delete(0, END)
-    e[1][1].insert(0,translateButton_2_EN(e[0][1].get()))
+    e[1][1].insert(0, translateButton_2_EN(e[0][1].get()))
 
 def To_Pl(e):
     e[0][1].delete(0, END)
-    e[0][1].insert(0,translateButton_2_EN(e[1][1].get()))
+    e[0][1].insert(0, translateButton_2_PL(e[1][1].get()))
 
 def clearEnts(e):
     e[0][1].delete(0, END)
     e[1][1].delete(0, END)
+
+def Dict(e):
+    if isWord(e[0][1].get()) and isWord(e[1][1].get()):
+        is_PL_Dict, id_PL = checkIfInDict(e[0][1].get())
+        is_EN_Dict, id_EN = checkIfInDict(e[1][1].get())
+        if is_PL_Dict:
+            changeDict(e[0][1].get(), 'eng', e[1][1].get())
+        elif is_EN_Dict:
+            changeDict(e[1][1].get(), 'pl', e[0][1].get())
+        else:
+            add_2_dict(e[0][1].get(), e[1][1].get())
+        e[0][1].delete(0, END)
+        e[0][1].insert(0, 'Dodano!')
+        e[0][1].delete(0, END)
+    else:
+        e[0][1].delete(0, END)
+        e[0][1].insert(0, 'Oba pola muszą zawierać pojedyncze slowa!')
+
 
 if __name__ == '__main__':
     root = Tk()
@@ -109,26 +133,6 @@ if __name__ == '__main__':
     to_pl.pack(side=LEFT, padx=5, pady=5)
     clr = Button(root, text='Czyść wejścia', command=(lambda e=ents: clearEnts(e)))
     clr.pack(side=LEFT, padx=5, pady=5)
-    add_Dict = Button(root, text='Dodaj tłumaczenie')
+    add_Dict = Button(root, text='Dodaj tłumaczenie', command=(lambda e=ents: Dict(e)))
     add_Dict.pack(side=LEFT, padx=5, pady=5)
     root.mainloop()
-    '''
-    mode = input('1 - tłumaczenie, 2 - dodawanie')
-    if int(mode) == 1:
-        num = input("Język docelowy(1 - pl, 2 - eng): ")
-        str = input("Słowo do przetłumaczenia: ")
-        if int(num) == 1:
-            print(translate_2_PL(str))
-            ch = input("Chcesz zmienić znaczenie? 1 - tak, 2 - nie :")
-            if int(ch) == 1:
-                nStr = input("Nowe znaczenie: ")
-                changeDict(str, 'pl', nStr)
-        elif int(num) == 2:
-            print(translate_2_EN(str))
-            ch = input("Chcesz zmienić znaczenie? 1 - tak, 2 - nie :")
-            if int(ch) == 1:
-                nStr = input("Nowe znaczenie: ")
-                changeDict(str, 'eng', nStr)
-    elif int(mode) == 2:
-        print("TODO")
-    '''
