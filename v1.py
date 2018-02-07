@@ -3,6 +3,7 @@
 import json
 from googletrans import Translator
 from tkinter import *
+from PIL import Image, ImageTk
 
 fields = 'Słowo PL', 'Słowo ENG'
 
@@ -123,6 +124,11 @@ def Dict(e):
         e[0][1].delete(0, END)
         e[0][1].insert(0, 'Oba pola muszą zawierać pojedyncze slowa!')
 
+def Info():
+    window = Toplevel(root)
+    photo = PhotoImage('pic.gif')
+    w = Label(window, image=photo, justify=LEFT, text="Aplikacja do porostego tłumaczenia wyrazów\nAutor: Jarosław Ciołek-Żelechowski\nurl: https://github.com/Torak28/PythoonTranslate")
+    w.pack(side="bottom", fill="both", expand="yes")
 
 if __name__ == '__main__':
     root = Tk()
@@ -135,4 +141,6 @@ if __name__ == '__main__':
     clr.pack(side=LEFT, padx=5, pady=5)
     add_Dict = Button(root, text='Dodaj tłumaczenie', command=(lambda e=ents: Dict(e)))
     add_Dict.pack(side=LEFT, padx=5, pady=5)
+    Info = Button(root, text='Info', command=Info)
+    Info.pack(side=LEFT, padx=5, pady=5)
     root.mainloop()
