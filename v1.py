@@ -125,10 +125,14 @@ def Dict(e):
         e[0][1].insert(0, 'Oba pola muszą zawierać pojedyncze slowa!')
 
 def Info():
+    #
     window = Toplevel(root)
-    photo = PhotoImage('pic.gif')
-    w = Label(window, image=photo, justify=LEFT, text="Aplikacja do porostego tłumaczenia wyrazów\nAutor: Jarosław Ciołek-Żelechowski\nurl: https://github.com/Torak28/PythoonTranslate")
-    w.pack(side="bottom", fill="both", expand="yes")
+    photo = PhotoImage(file='pic.gif')
+    w1 = Label(window, image=photo)
+    w1.image = photo
+    w1.pack(side='bottom')
+    w2 = Label(window,  padx = 10, justify=LEFT, text="Aplikacja do porostego tłumaczenia wyrazów\nAutor: Jarosław Ciołek-Żelechowski\nurl: https://github.com/Torak28/PythoonTranslate")
+    w2.pack(side='top')
 
 if __name__ == '__main__':
     root = Tk()
